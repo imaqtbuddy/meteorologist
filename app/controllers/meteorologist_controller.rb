@@ -29,9 +29,6 @@ require 'json'
 @latitude=@location["lat"]
 @longitude=@location["lng"]
 
-
-@url_start_2="https://api.forecast.io/forecast/f8b0a88383ebae1936941ba6057b06ee/"
-# @url2=@url_start_2+@latitude+","+@longitude
 @url2="https://api.forecast.io/forecast/f8b0a88383ebae1936941ba6057b06ee/#{@latitude},#{@longitude}"
 @raw_data2=open(@url2).read
 require 'json'
