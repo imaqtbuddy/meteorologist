@@ -1,5 +1,9 @@
 require 'open-uri'
 
+
+# https://api.forecast.io/forecast/f8b0a88383ebae1936941ba6057b06ee/37.8267,-122.423
+
+
 class ForecastController < ApplicationController
   def coords_to_weather_form
     # Nothing to do here.
@@ -9,6 +13,16 @@ class ForecastController < ApplicationController
   def coords_to_weather
     @lat = params[:user_latitude]
     @lng = params[:user_longitude]
+    @url_start="https://api.forecast.io/forecast/f8b0a88383ebae1936941ba6057b06ee/"
+    @url=@url_start+@lat+","+@lng
+
+@raw_data=open(@url).read
+require 'json'
+@parsed_data=JSON.parse(@raw_data)
+@currently=@parsed_data["currently"]
+@minutely=@parsed_data["minutely"]
+@hourly=@parsed_data["hourly"]
+@daily=@parsed_data["daily"]
 
     # ==========================================================================
     # Your code goes below.
@@ -16,17 +30,15 @@ class ForecastController < ApplicationController
     # The longitude the user input is in the string @lng.
     # ==========================================================================
 
+    @current_temperature = @currently["temperature"]
 
+    @current_summary = @currently["summary"]
 
-    @current_temperature = "Replace this string with your answer."
+    @summary_of_next_sixty_minutes = @minutely["summary"]
 
-    @current_summary = "Replace this string with your answer."
+    @summary_of_next_several_hours = @hourly["summary"]
 
-    @summary_of_next_sixty_minutes = "Replace this string with your answer."
-
-    @summary_of_next_several_hours = "Replace this string with your answer."
-
-    @summary_of_next_several_days = "Replace this string with your answer."
+    @summary_of_next_several_days = @daily["summary"]
 
     render("coords_to_weather.html.erb")
   end
